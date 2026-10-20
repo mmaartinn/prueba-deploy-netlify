@@ -18,7 +18,7 @@ function App() {
         <div>
           <h1>Get started</h1>
           <p>
-            Hola mundo
+            Hola planeta, esta si que si (intentos: 2)
           </p>
         </div>
         <button
