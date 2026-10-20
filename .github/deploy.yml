@@ -1,0 +1,33 @@
+name: Deploy to Netlify
+
+on:
+  push:
+    branches:
+      - main # Tip del enunciado: solo se ejecuta al integrar a main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5 # Restricción del enunciado: cancela si se pega
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Ajusta a la versión de Node que usen
+          cache: 'npm' # Vital para ahorrar minutos de ejecución instalando dependencias
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Construir el proyecto (Vite)
+        run: npm run build
+
+      - name: Desplegar a Netlify
+        run: npx netlify-cli deploy --dir=dist --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
